@@ -78,7 +78,7 @@ int main(int argc, char** argv){
     TaylorExp5 = ExponentialTaylor(xmin + j*delta, 5);
     TaylorExp7 = ExponentialTaylor(xmin + j*delta, 7);
     PadeExp = ExponentialPade(xmin+j*delta, 4, 4);
-    fprintf(fp, "%lg\t%lg\t%lg\t%lg\t%lg\n", xmin + j*delta, RealExp, TaylorExp5, TaylorExp7, PadeExp);
+    fprintf(fp, "%.10g\t%.10g\t%.10g\t%.10g\t%.10g\n", xmin + j*delta, RealExp, TaylorExp5, TaylorExp7, PadeExp);
   }
   fclose(fp);
   
