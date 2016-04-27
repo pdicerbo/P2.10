@@ -1,6 +1,5 @@
 
 for NP in 100 200 300 400 500 700 1000 1300 1500 1700 2000
 do
-    ./Obj_64bit-fpu-gcc/tester 1000 1 $NP | grep avgerr | awk -v np="$NP" -v sep="\t" '{print np sep $6}'
-
+	./Obj_64bit-fpu-gcc/tester 1000 1 $NP | grep avgerr | awk -v np="$NP" -v sep="\t" '{print np sep $6}'
 done
