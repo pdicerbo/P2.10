@@ -60,7 +60,10 @@ double spl_exp(double x, double x0, double delta, double *xar, double *a, double
 {
 /*  WRITE YOUR SUBROUTINE HERE  */
 
- };
+    int index = (x - x0)/delta;
+    double value = a[index+1] + b[index+1]*(x - xar[index]);
+    return value;
+};
 
                                            
 /* 
