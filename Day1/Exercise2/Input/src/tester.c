@@ -80,9 +80,15 @@ int main(int argc, char **argv)
     num = atoi(argv[1]);
     rep = atoi(argv[2]);
     if (argc < 4) {
+        nmax=100;
         seed = 1966;
-    } else {
-        seed = atoi(argv[3]);
+    } else if(argc == 4){
+        nmax=atoi(argv[3]);
+        seed = 1966;
+    }
+    else {
+        nmax=atoi(argv[3]);
+        seed = atoi(argv[4]);
     }
     srand(seed);
 
@@ -90,7 +96,6 @@ int main(int argc, char **argv)
     posix_memalign((void **)&var, _FM_ALIGN, num*sizeof(type)); \
     memset(var, 0, num*sizeof(type))
 
-    nmax=100;
 
 #define GRABMEM2(var,type)                                          \
     posix_memalign((void **)&var, _FM_ALIGN, nmax*sizeof(type)); \
