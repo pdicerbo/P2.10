@@ -19,7 +19,7 @@ int MyFactorial(int n){
 
 /*
  * This function returns the value of the
- * taylor expanction (at order n) of e(x).
+ * Taylor expanction (at order n) of e(x).
  * The expanction is centered in x_0 = 0
  */
 double ExponentialTaylor(double x, int n){
@@ -35,9 +35,31 @@ double ExponentialTaylor(double x, int n){
   return value;
 }
 
+/*
+ * This function returns the value of the
+ * Pade' approximation (at order [p/q]) of e(x).
+ * The expanction is centered in x_0 = 0
+ */
+double ExponentialPade(double x, int p, int q){
+  double num = 0.;
+  double denom = 0.;
+  int j;
+  
+  for(j = 0; j < p+1; j++)
+    num += ((double) (MyFactorial(p + q - j)*MyFactorial(p)) * pow(x, j))/
+      ((double) (MyFactorial(p+q)*MyFactorial(j)*MyFactorial(p-j)));
+
+  for(j = 0; j < q+1; j++)
+    denom += ((double) (MyFactorial(p + q - j)*MyFactorial(q)) * pow(-x, j))/
+      ((double) (MyFactorial(p+q)*MyFactorial(j)*MyFactorial(q-j)));
+
+  return num/denom;
+  
+}
+
 int main(int argc, char** argv){
 
-  double RealExp, TaylorExp5, TaylorExp7;
+  double RealExp, TaylorExp5, TaylorExp7, PadeExp;
   double xmin, xmax, delta;
   int NPoints, j;
   
@@ -55,7 +77,8 @@ int main(int argc, char** argv){
     RealExp = exp(xmin + j*delta);
     TaylorExp5 = ExponentialTaylor(xmin + j*delta, 5);
     TaylorExp7 = ExponentialTaylor(xmin + j*delta, 7);
-    fprintf(fp, "%lg\t%lg\t%lg\t%lg\n", xmin + j*delta, RealExp, TaylorExp5, TaylorExp7);
+    PadeExp = ExponentialPade(xmin+j*delta, 4, 4);
+    fprintf(fp, "%lg\t%lg\t%lg\t%lg\t%lg\n", xmin + j*delta, RealExp, TaylorExp5, TaylorExp7, PadeExp);
   }
   fclose(fp);
   
