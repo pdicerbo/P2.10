@@ -37,10 +37,32 @@ double ExponentialTaylor(double x, int n){
 
 int main(int argc, char** argv){
 
-  int test1, test2;
-  test1 = MyFactorial(3);
-  test2 = MyFactorial(4);
-  printf("\n\tHello World\n\n\t3! = %d, 4z! = %d\n\n", test1, test2);
+  double RealExp, TaylorExp;
+  double xmin, xmax, delta;
+  int NPoints, j, n;
+  
+  FILE* fp;
+
+  
+  xmin = -10.;
+  xmax = 10.;
+  NPoints = 100;
+  n = 5; // order of taylor expansion
+  
+  fp = fopen("MyResults.dat", "w");
+  delta = (xmax - xmin) / NPoints;
+
+  for(j = 0; j < NPoints; j++){
+    RealExp = exp(xmin + j*delta);
+    TaylorExp = ExponentialTaylor(xmin + j*delta, n);
+    fprintf(fp, "%lg\t%lg\t%lg\n", xmin + j*delta, RealExp, TaylorExp);
+  }
+  fclose(fp);
+  
+  /* int test1, test2; */
+  /* test1 = MyFactorial(3); */
+  /* test2 = MyFactorial(4); */
+  /* printf("\n\tHello World\n\n\t3! = %d, 4z! = %d\n\n", test1, test2); */
 
   return 0;
 
