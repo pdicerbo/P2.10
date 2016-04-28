@@ -55,7 +55,7 @@ float Q_rsqrt( float number )
         i = x2 - i;
         y = *(float *)&i;
 
-        for(j = 0; j < 2; j++)
+        for(j = 0; j < 3; j++)
             y = y - (1./(y*y)-number)/(-2./(y*y*y));
 
 	return y;
