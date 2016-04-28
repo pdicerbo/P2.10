@@ -20,6 +20,7 @@ for my_np in NPoints:
 
     print("Case of ", MyN, " points")
     for index in np.arange(MyN-1):
+        # compute the theoretical upper bound of the error
         TmpErr += 0.125*np.exp(MyGrid[index+1])*(MyGrid[index+1] - MyGrid[index])**2
 
     RealErr[j] = TmpErr / my_np
