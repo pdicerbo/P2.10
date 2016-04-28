@@ -45,8 +45,18 @@ float Q_rsqrt( float number )
         long i;
 	float x2, y;
 	const float threehalfs = 1.5F;
+        int j;
  
-/* Insert here your algorithm */
+        /* Insert here your algorithm */
+        x2 = 0x5f3759df;
+        
+        i = *(long *)&number;
+        i = i >> 1;
+        i = x2 - i;
+        y = *(float *)&i;
+
+        for(j = 0; j < 2; j++)
+            y = y - (1./(y*y)-number)/(-2./(y*y*y));
 
 	return y;
 }
