@@ -14,7 +14,7 @@ double RN_Method(double x0, int N){
   int j;
   double xtmp = x0;
 
-  if(x0 == 0)
+  if(x0*x0 == 0)
     return x0;
   
   for(j = 0; j < N; j++)
@@ -28,19 +28,19 @@ int main(int argc, char** argv){
 
   int N = 4;
   int NPoint = 100;
-  int j;
+  int j, NDef;
 
   double* MyGrid = (double*)malloc(NPoint*sizeof(double));
   double RealSqrt, MySqrt, MyVal, CheckVal;
   double xmin = 0.;
   double xmax = 20.;
   double delta = (xmax - xmin)/NPoint;
+  FILE *fp, *cp;
 
   // fill MyGrid
   for(j = 0; j < NPoint; j++)
     MyGrid[j] = xmin + j*delta;
 
-  FILE* fp;
   fp = fopen("MyData.dat", "w");
   
   for(j = 0; j < NPoint; j++){
@@ -50,19 +50,24 @@ int main(int argc, char** argv){
   }
   fclose(fp);
 
-  // check convergence calculating sqrt(5)
-  CheckVal = 15.;
-  MyVal = sqrt(CheckVal);
-  N = 1;
-  MySqrt = RN_Method(CheckVal, N);
+  // convergence check
+  NDef = 1;
+  
+  for(j = 0; j < NPoint; j++){
+    MyVal = sqrt(MyGrid[j]);
+    N = 1;
+    MySqrt = RN_Method(MyGrid[j], N);
 
-  while(fabs(MySqrt - MyVal) > 1.e-14){
-    N++;
-    MySqrt = RN_Method(CheckVal, N);
+    while(fabs(MySqrt - MyVal) > 1.e-14){
+      N++;
+      MySqrt = RN_Method(MyGrid[j], N);
+    }
+
+    if(NDef < N)
+      NDef = N;
   }
 
-  printf("\n\tIn order to obtain abs(sqrt(x) - MySqrt(x)) < 1.e-14 we need %d iteration\n", N);
-  printf("\tsqrt(%lg) = %.16g, MySqrt = %.16g\n\n", CheckVal, MyVal, MySqrt);
-  
+  printf("\n\tThe maximum number of iteration in order to obtain \n\tfabs(sqrt(x) - MySqrt(x)) < 1.e-14 in the choosed interval is equal to %d\n\n", NDef);
+    
   return 0;
 }
