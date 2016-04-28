@@ -31,7 +31,7 @@ int main(int argc, char** argv){
   int j;
 
   double* MyGrid = (double*)malloc(NPoint*sizeof(double));
-  double RealSqrt, MySqrt;
+  double RealSqrt, MySqrt, MyVal, CheckVal;
   double xmin = 0.;
   double xmax = 20.;
   double delta = (xmax - xmin)/NPoint;
@@ -49,6 +49,20 @@ int main(int argc, char** argv){
     fprintf(fp, "%lg\t%lg\t%lg\n", xmin+j*delta, RealSqrt, MySqrt);
   }
   fclose(fp);
+
+  // check convergence calculating sqrt(5)
+  CheckVal = 15.;
+  MyVal = sqrt(CheckVal);
+  N = 1;
+  MySqrt = RN_Method(CheckVal, N);
+
+  while(fabs(MySqrt - MyVal) > 1.e-14){
+    N++;
+    MySqrt = RN_Method(CheckVal, N);
+  }
+
+  printf("\n\tIn order to obtain abs(sqrt(x) - MySqrt(x)) < 1.e-14 we need %d iteration\n", N);
+  printf("\tsqrt(%lg) = %.16g, MySqrt = %.16g\n\n", CheckVal, MyVal, MySqrt);
   
   return 0;
 }
