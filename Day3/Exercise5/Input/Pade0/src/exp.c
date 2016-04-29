@@ -53,7 +53,7 @@ double pad_exp(double x)
 
     x *= log2(2.71828182846);
 
-    int s = (x >= 0 ? 1 : -1);
+    int s = x/fabs(x); //(x >= 0 ? 1 : -1);
     
     int ipart = (int) (x + s*0.5);
        
