@@ -34,10 +34,44 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "fastermath.h"
 #include "fm_internal.h"
+#include <math.h>
 
 /*  Seriani: basic Pade` implementation of exp(x).
  */
 
+static const double pad_exp_p[] __attribute__ ((aligned(_FM_ALIGN))) = {
+    2.30933477057345225087e-2,
+    2.02020656693165307700e1,
+    1.51390680115615096133e3,
+    2.33184211722314911771e2,
+    4.36821166879210612817e3,
+};
+
+double pad_exp(double x)
+{
+    double  px, qx;
+
+    x *= log2(2.71828182846);
+
+    double s = (x >= 0. ? 1. : -1.);
+    
+    int ipart = (int) (x + s*0.5);
+       
+    double ipow = pow(2, ipart);
+
+    x -= ipart;
+    
+    px = pad_exp_p[0]*x*x*x*x*x +
+        pad_exp_p[1]*x*x*x + pad_exp_p[2]*x;
+
+    qx = x*x*x*x + pad_exp_p[3]*x*x + pad_exp_p[4];
+
+    x = 1. + 2.*px/(qx-px);
+
+    return ipow*x;
+}
+
+/***
      static const double pad_exp_p[] __attribute__ ((aligned(_FM_ALIGN))) = {
          5.95238095238095238095e-4,
          1.19047619047619047619e-2,
@@ -63,7 +97,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        x = px/qx;
       return x;
      }
-
+***/
 
 
 
