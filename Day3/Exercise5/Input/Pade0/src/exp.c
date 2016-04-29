@@ -53,11 +53,14 @@ double pad_exp(double x)
 
     x *= log2(2.71828182846);
 
-    double s = (x >= 0. ? 1. : -1.);
+    int s = (x >= 0. ? 1. : -1.);
     
     int ipart = (int) (x + s*0.5);
        
-    double ipow = pow(2, ipart);
+    /* double ipow = pow(2, ipart); */
+    double ipow = (double) (1 << s*ipart);
+    if(s < 0)
+        ipow = 1./ipow;
 
     x -= ipart;
     
@@ -72,6 +75,7 @@ double pad_exp(double x)
 }
 
 /***
+     // Old Code 
      static const double pad_exp_p[] __attribute__ ((aligned(_FM_ALIGN))) = {
          5.95238095238095238095e-4,
          1.19047619047619047619e-2,
