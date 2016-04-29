@@ -57,16 +57,16 @@ double pad_exp(double x)
     long int t = (s + 127) << 23;
     double ipow = *((float*)(&t));
 
-    x -= s; // + 0.5;
+    x -= s;
     
     px = pad_exp_p[0]*x*x*x*x*x +
         pad_exp_p[1]*x*x*x + pad_exp_p[2]*x;
 
     qx = x*x*x*x + pad_exp_p[3]*x*x + pad_exp_p[4];
 
-    x = (qx + px)/(qx-px);
+    x = 1. + 2.*px/(qx-px);
 
-    return ipow*x; //*M_SQRT2;
+    return ipow*x;
 }
 
 /***
