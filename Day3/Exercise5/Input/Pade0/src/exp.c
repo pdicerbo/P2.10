@@ -53,26 +53,20 @@ double pad_exp(double x)
 
     x *= log2(2.71828182846);
 
-    // int s = x/fabs(x);
-    int s = (x >= 0 ? 1 : -1);
-    
-    int ipart = (int) (x + s*0.5);
-       
-    /* double ipow = pow(2, ipart); */
-    double ipow = (double) (1 << s*ipart);
-    if(s < 0)
-        ipow = 1./ipow;
+    int s = (x > 0 ? (int) x : (int) x-1);
+    long int t = (s + 127) << 23;
+    double ipow = *((float*)(&t));
 
-    x -= ipart;
+    x -= s; // + 0.5;
     
     px = pad_exp_p[0]*x*x*x*x*x +
         pad_exp_p[1]*x*x*x + pad_exp_p[2]*x;
 
     qx = x*x*x*x + pad_exp_p[3]*x*x + pad_exp_p[4];
 
-    x = 1. + 2.*px/(qx-px);
+    x = (qx + px)/(qx-px);
 
-    return ipow*x;
+    return ipow*x; //*M_SQRT2;
 }
 
 /***
